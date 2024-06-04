@@ -6,3 +6,7 @@ data/*
 
 # But don't ignore the drive-me-not/ subdirectory
 !data/drive-me-not/
+
+# exclude pycache
+__pycache__/
+*.pyc
