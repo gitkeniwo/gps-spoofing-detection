@@ -2,9 +2,11 @@
 
 ## Dataset Selection
 
-- drive-me-not
+- drive-me-not: CRI-Lab, “cri-lab-hbku/gps-spoofing-detection-cellular.” Dec. 17, 2023. Accessed: May 01, 2024. [Online]. Available: https://github.com/cri-lab-hbku/gps-spoofing-detection-cellular
 
 ## Existing Methods
 
-- PCA + One-class Classfier
-- LSTM
+- **PCA + One-class Classfier**: J. Whelan, T. Sangarapillai, O. Minawi, A. Almehmadi, and K. El-Khatib, “Novelty-based Intrusion Detection of Sensor Attacks on Unmanned Aerial Vehicles,” in Proceedings of the 16th ACM Symposium on QoS and Security for Wireless and Mobile Networks, in Q2SWinet ’20. New York, NY, USA: Association for Computing Machinery, Nov. 2020, pp. 23–28. doi: 10.1145/3416013.3426446.
+- **LSTM**: S. Wang, J. Wang, C. Su, and X. Ma, “Intelligent Detection Algorithm Against UAVs’ GPS Spoofing Attack,” in 2020 IEEE 26th International Conference on Parallel and Distributed Systems (ICPADS), Dec. 2020, pp. 382–389. doi: 10.1109/ICPADS51040.2020.00058.
+- **Cellular Network**: G. Oligeri, S. Sciancalepore, O. A. Ibrahim, and R. Di Pietro, “Drive me not: GPS spoofing detection via cellular network: (architectures, models, and experiments),” in Proceedings of the 12th Conference on Security and Privacy in Wireless and Mobile Networks, Miami Florida: ACM, May 2019, pp. 12–22. doi: 10.1145/3317549.3319719.
+- **Cumulation of Error**: I. Y. Garrett and R. M. Gerdes, “On the Efficacy of Model-Based Attack Detectors for Unmanned Aerial Systems,” in Proceedings of the Second ACM Workshop on Automotive and Aerial Vehicle Security, New Orleans LA USA: ACM, Mar. 2020, pp. 11–14. doi: 10.1145/3375706.3380555.
