@@ -1,4 +1,4 @@
-# IST Seminar - GPS SPoofing Detection
+# IST Seminar - GPS Spoofing Detection
 
 ## Dataset Selection
 
