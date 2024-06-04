@@ -1,3 +1,8 @@
 *.zip
 *.tar.gz
 
+# Ignore everything in the data directory
+data/*
+
+# But don't ignore the drive-me-not/ subdirectory
+!data/drive-me-not/
