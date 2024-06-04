@@ -2,4 +2,4 @@
 
 jupyter nbconvert --to script notebooks/* 
 
-mv notebooks/*.py src/
+mv -f notebooks/*.py src/
