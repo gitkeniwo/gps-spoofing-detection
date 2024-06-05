@@ -1,6 +1,2 @@
-import models
-
-__all__ = [
-    'models',
-    'utils',
-]
+from .models import *
+from .utils import *

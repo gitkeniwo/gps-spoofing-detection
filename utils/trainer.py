@@ -2,17 +2,31 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 import tqdm
+import wandb
 
 class Trainer:
     """
      Trainer class
     """
     
-    def __init__(self, model: nn.Module, dataloader: DataLoader, criterion, optimizer):
+    def __init__(self, model: nn.Module, dataloader: DataLoader, criterion, optimizer, if_wandb=False, ):
         self.model = model
         self.dataloader = dataloader
         self.criterion = criterion
         self.optimizer = optimizer
+        
+        if if_wandb:
+            wandb.init(project="pytorch-template")
+            wandb.config.update({"model": model.__class__.__name__,
+                                "optimizer": optimizer.__class__.__name__,
+                                "criterion": criterion.__class__.__name__,
+                                "learning_rate": optimizer.param_groups[0]['lr'],
+                                "batch_size": dataloader.batch_size,
+                                "dataset": "drone-dataset",
+                                "epochs": 100})
+            
+            # if wandb is enabled, log the model 
+            wandb.watch(self.model)
 
     def train(self, epochs):
         """Execute train process, using tqdm for progress bar."""
@@ -46,5 +60,13 @@ class Trainer:
                 
                 running_loss += loss.item()
                 
+                # wandb logging
+                if wandb.run:
+                    wandb.log({"loss": loss.item()})
+                
             print(f"Epoch {epoch+1}, loss: {running_loss/len(self.dataloader)}")
+         
+        if wandb.run:   
+            wandb.finish()
+        
             
