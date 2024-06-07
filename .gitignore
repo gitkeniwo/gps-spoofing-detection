@@ -10,5 +10,5 @@ data/*
 # exclude pycache and wandb directories
 __pycache__/
 *.pyc
-
+*.DS_Store
 *wandb/
