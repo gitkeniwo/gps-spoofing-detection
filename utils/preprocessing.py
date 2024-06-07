@@ -7,7 +7,7 @@ from sklearn.decomposition import PCA
 SELECT_ATTRIBUTES_WHELAN = ['GPS_lat', 'GPS_long', 'vx', 'vy', 'ax', 'ay']
 
 
-def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WHELAN) -> pd.DataFrame:
+def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WHELAN, trace_num: int=0) -> pd.DataFrame:
     """
     Deals with raw data and returns a processed DataFrame with selected attributes as designated by `selected_attributes`.
     """
@@ -49,6 +49,9 @@ def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WH
     
     df = df[selected_attributes]
     
+    if trace_num:
+        df['trace'] = np.ones(df.shape[0]).astype(int) * trace_num
+    
     return df 
 
 
@@ -72,19 +75,20 @@ def zero_one_normalization(df: pd.DataFrame) -> pd.DataFrame:
 
 N_COMPONENTS = 3
 
-def pca_transform(df: pd.DataFrame, n_components: int = N_COMPONENTS) -> pd.DataFrame:
+def pca_transform(df: pd.DataFrame, n_components: int = N_COMPONENTS):
     
     """
     pca_transform is a function that performs PCA on the input DataFrame and returns the transformed DataFrame.
 
     Returns
     -------
-    _type_
-        _description_
+    pd.DataFrame, PCA
+        A tuple of the transformed DataFrame and the PCA object.
     """
     
     pca = PCA(n_components=n_components)
-    pca_result = pca.fit_transform(df)
+    pca.fit(df)
+    pca_result = pca.transform(df)
     df['pca-one'] = pca_result[:,0]
     df['pca-two'] = pca_result[:,1]
     
@@ -97,9 +101,9 @@ def pca_transform(df: pd.DataFrame, n_components: int = N_COMPONENTS) -> pd.Data
     
     if n_components == 3:
         df['pca-three'] = zero_one_normalization(df['pca-three'])
-        return df[['pca-one', 'pca-two', 'pca-three']]
+        return df[['pca-one', 'pca-two', 'pca-three']].copy(deep=True), pca
     
-    return df[['pca-one', 'pca-two']]
+    return df[['pca-one', 'pca-two']].copy(deep=True), pca
 
 
 
