@@ -66,6 +66,7 @@ class Trainer:
 
         print(f"Train Loss: {running_loss}")
         return running_loss
+             
                 
     def validate_epoch(self):
         """Execute validation process for one epoch."""
@@ -94,6 +95,7 @@ class Trainer:
         self.model.train()
         return val_loss
 
+
     def train(self, epochs):
         """Execute train process for multiple epochs."""
         
@@ -112,6 +114,7 @@ class Trainer:
         
         if wandb.run:
             wandb.finish()
+            
             
     def visualize_loss(self, train_loss, val_loss):
         """Visualize loss using matplotlib."""

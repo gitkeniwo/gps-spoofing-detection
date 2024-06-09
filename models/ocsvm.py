@@ -27,7 +27,7 @@ def optimize_OneClassSVM(X, n):
     
     print('Searching for optimal hyperparameters...')
     
-    nu = np.linspace(start=1e-2, stop=0.9, num=n)
+    nu = np.linspace(start=5e-2, stop=0.9, num=n)
     gamma = np.linspace(start=1e-6, stop=1e-2, num=n)
     
     opt_diff = 1.0 # difference between the predicted and expected error rate

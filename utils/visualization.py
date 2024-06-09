@@ -5,7 +5,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def plot_trace(df: pd.DataFrame, mode: str="position-only"):
+def plot_trace(df: pd.DataFrame, mode: str="position-only", 
+               marker_size=2, x_range=(51.43, 51.56), y_range=(25.28, 25.39),
+               colored: bool=False, 
+               color_col: str="spoofed", 
+               spoofed_color: str="red", 
+               genuine_color: str="green"):
     """
     plot_trace is a function that plots the trace of the vehicle.
 
@@ -15,6 +20,11 @@ def plot_trace(df: pd.DataFrame, mode: str="position-only"):
         df is a pandas DataFrame that contains the trace data.
     mode : str
         mode is a string that specifies the type of visualization to be done.
+    marker_size : int
+
+    x_range : tuple
+    
+    y_range : tuple
     """
     
     if mode == "position-only":
@@ -22,10 +32,28 @@ def plot_trace(df: pd.DataFrame, mode: str="position-only"):
     elif mode == "velocity":
         fig = make_subplots(rows=3, cols=2)
 
-    fig.add_trace(
-        go.Scatter(x=df['GPS_long'], y=df['GPS_lat']),
-        row=1, col=1, 
-    )
+    if colored:
+        colors = df[color_col].apply(lambda x: spoofed_color if x==1 else genuine_color)
+        
+        fig.add_trace(
+            go.Scatter(x=df['GPS_long'], y=df['GPS_lat'], 
+                        mode='markers',
+                        marker=dict(color=colors)),
+            row=1, col=1, 
+        )
+
+    else:
+        fig.add_trace(
+            go.Scatter(x=df['GPS_long'], y=df['GPS_lat']),
+            row=1, col=1
+        )
+    # fix range of x and y axis
+    fig.update_xaxes(range=[x_range[0], x_range[1]], row=1, col=1)
+    fig.update_yaxes(range=[y_range[0], y_range[1]], row=1, col=1)
+    
+    # update marker size
+    fig.update_traces(marker=dict(size=marker_size))
+
 
     if mode == "velocity":
         fig.add_trace(
