@@ -3,13 +3,19 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import tqdm
 import wandb
+import numpy as np
 
 class Trainer:
     """
      Trainer class
     """
     
-    def __init__(self, model: nn.Module, train_loader: DataLoader, val_loader: DataLoader, criterion, optimizer, if_wandb=False, ):
+    def __init__(self, model: nn.Module, 
+                 train_loader: DataLoader, val_loader: DataLoader, 
+                 criterion, optimizer, 
+                 if_wandb=False, 
+                 wandb_project_name="default"+str(np.random.randint(0, 1000))
+                 ):
         self.model = model
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -17,7 +23,7 @@ class Trainer:
         self.optimizer = optimizer
         
         if if_wandb:
-            wandb.init(project="pytorch-template")
+            wandb.init(project=wandb_project_name)
             wandb.config.update({"model": model.__class__.__name__,
                                 "optimizer": optimizer.__class__.__name__,
                                 "criterion": criterion.__class__.__name__,
@@ -35,7 +41,12 @@ class Trainer:
         
         running_loss = 0.0
         
-        for i, data in tqdm.tqdm(enumerate(self.train_loader), total=len(self.train_loader)):
+        # print progress bar using tqdm, only when epoch % 10 == 0
+        
+        for i, data in tqdm.tqdm(enumerate(self.train_loader), 
+                                 total=len(self.train_loader),
+                                 leave=True,
+                                 ):
             
             # Get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
@@ -65,6 +76,7 @@ class Trainer:
                 wandb.log({"loss": loss.item()})
 
         print(f"Train Loss: {running_loss}")
+        
         return running_loss
              
                 
@@ -76,7 +88,10 @@ class Trainer:
         val_loss = 0.0
         
         with torch.no_grad():
-            for i, data in tqdm.tqdm(enumerate(self.val_loader), total=len(self.val_loader)):
+            for i, data in tqdm.tqdm(enumerate(self.val_loader), 
+                                     total=len(self.val_loader),
+                                     leave=True,
+                                     ):
                 inputs, labels = data
                 inputs, labels = inputs.float(), labels.float()
                 
@@ -91,8 +106,9 @@ class Trainer:
         print(f"Val Loss: {loss.item()}")
         
         # wandb logging 
-                
+            
         self.model.train()
+        
         return val_loss
 
 
@@ -103,6 +119,7 @@ class Trainer:
         val_loss = []
         
         for epoch in range(epochs):
+            
             print(f"Epoch {epoch+1}/{epochs}")
             train_loss.append(self.train_epoch())
             val_loss.append(self.validate_epoch())
@@ -117,15 +134,24 @@ class Trainer:
             
             
     def visualize_loss(self, train_loss, val_loss):
-        """Visualize loss using matplotlib."""
+        """Visualize loss using seaborn """
         
         import matplotlib.pyplot as plt
+        import seaborn as sns
         
+        sns.set_theme(context="notebook", style="darkgrid")
         plt.plot(train_loss, label="train_loss")
         plt.plot(val_loss, label="val_loss")
         plt.legend()
-        plt.show()
         plt.savefig(f"../outputs/img/train_val_loss_{self.model.__class__.__name__}.png")
+        plt.show()
+        
+        
+        # plt.plot(train_loss, label="train_loss")
+        # plt.plot(val_loss, label="val_loss")
+        # plt.legend()
+        # plt.savefig(f"../outputs/img/train_val_loss_{self.model.__class__.__name__}.png")
+        # plt.show()
         
         
     
