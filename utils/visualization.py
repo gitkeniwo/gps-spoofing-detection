@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 def plot_trace(df: pd.DataFrame, mode: str="position-only", 
                marker_size=2, x_range=(51.43, 51.56), y_range=(25.28, 25.39),
@@ -121,3 +122,17 @@ def plot_pca(pca_dfs: pd.DataFrame, n_components: int=2):
         
     else:
         raise ValueError("n_components must be either 2 or 3")
+    
+    
+def plot_cf_matrix(cf_matrix: np.ndarray):
+    """
+    plot_cf_matrix # use seaborn to visualize the confusion matrix
+    """
+    LABELS = ["Malicious","Benign"]
+    plt.figure(figsize=(4, 4))
+    plt.tick_params(axis="x", labelsize=10)
+    plt.tick_params(axis="y", labelsize=10)
+    sns.heatmap(cf_matrix, xticklabels=LABELS, yticklabels=LABELS, annot=True, annot_kws={"size": 20}, fmt="d", cmap="Blues", linewidths=1, linecolor='black');
+    plt.ylabel('True class', fontsize=10)
+    plt.xlabel('Predicted class', fontsize=10)
+    plt.show()
