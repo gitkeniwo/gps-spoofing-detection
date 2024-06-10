@@ -58,8 +58,6 @@ def optimize_OneClassSVM(X, n):
     return opt_nu, opt_gamma
 
 
-
-
 # Grid search for the optimal hyperparameters
 from sklearn.model_selection import GridSearchCV
 
