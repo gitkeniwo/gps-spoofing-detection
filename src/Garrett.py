@@ -75,7 +75,7 @@ for th in threadshold:
     fp_data[th]=fp_arr
     detect_time_data[th]=detect_time_arr
 
-
+#Plot the FP.
 fig = plt.figure()
 ax3 = plt.axes(projection='3d')
 
@@ -92,7 +92,7 @@ plt.title('False Positive Rate')
 
 plt.show()
 
-
+#Plot the detection time.
 fig = plt.figure()
 ax3 = plt.axes(projection='3d')
 
@@ -110,7 +110,9 @@ plt.title('Detection Time (s)')
 plt.show()
 
 #Garrett's CUSUM method
+#An empty 2d data frame to store the result of FP. rows: burst_length, columns: threadshold 
 threadshold=np.arange(5,130,5,dtype=int)
+#An empty 2d data frame to store the result of time to detect.
 window_length=np.arange(2,100,5,dtype=int)
 
 #An empty 2d data frame to store the result of FP. rows: window_length, columns: threadshold 
@@ -141,7 +143,7 @@ for th in threadshold:
     fp_data[th]=fp_arr
     detect_time_data[th]=detect_time_arr
 
-
+#Plot the FP.
 fig = plt.figure()
 ax3 = plt.axes(projection='3d')
 
@@ -158,7 +160,7 @@ plt.title('CUSUM Method\n False Positive Rate')
 
 plt.show()
 
-
+#Plot the detection time.
 fig = plt.figure()
 ax3 = plt.axes(projection='3d')
 
