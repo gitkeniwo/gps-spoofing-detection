@@ -4,7 +4,7 @@ from utils.haversine import haversine
 
 
 def estimate_path_err(Drx, expF, qthr):
-    print(f'Estimating path error for {expF}... ')
+    # print(f'Estimating path error for {expF}... ')
     enXY = []
     i = 0
 
@@ -14,7 +14,7 @@ def estimate_path_err(Drx, expF, qthr):
         start=i
         # Find all rows with the same timepoint
         idx = Drx['Time'] == Drx.iloc[i]['Time']
-        print(idx)
+        # print(idx)
         # Jump to the row with a new time
         i += idx.sum()
 
