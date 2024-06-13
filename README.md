@@ -14,3 +14,13 @@
   - G. Oligeri, S. Sciancalepore, O. A. Ibrahim, and R. Di Pietro, “Drive me not: GPS spoofing detection via cellular network: (architectures, models, and experiments),” in Proceedings of the 12th Conference on Security and Privacy in Wireless and Mobile Networks, Miami Florida: ACM, May 2019, pp. 12–22. doi: 10.1145/3317549.3319719.
 - **Cumulation of Error**
   - I. Y. Garrett and R. M. Gerdes, “On the Efficacy of Model-Based Attack Detectors for Unmanned Aerial Systems,” in Proceedings of the Second ACM Workshop on Automotive and Aerial Vehicle Security, New Orleans LA USA: ACM, Mar. 2020, pp. 11–14. doi: 10.1145/3375706.3380555.
+
+## Project Structure
+
+- `data/` is dataset directory.
+- `models/` contains separated code of classes and function to implement detection models we covered in this repo.
+- `notebooks/` includes notebooks for demonstrating the detection algorithms.
+- `outputs/` stores plotted assets.
+- `save_model/` is where saved detection model is located.
+- `src/` Notebooks are converted to executable .py in src/
+- `utils/` contains basic utilities for data processing, visualization and training of models.
