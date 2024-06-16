@@ -30,6 +30,7 @@ plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 plt.title('Moving Path')
 plt.legend()
+plt.savefig(r'../outputs/png/Garrett_moving_path')
 plt.show()
 
 #Garrett's first method
@@ -70,6 +71,7 @@ for th in threadshold:
                     break
         fp_rate=num_fp/attack_start_id
         fp_arr=np.append(fp_arr,fp_rate)
+        detect_time=detect_time/1000 #change ms to s
         detect_time_arr=np.append(detect_time_arr,detect_time)
 
     fp_data[th]=fp_arr
@@ -88,8 +90,8 @@ ax3.view_init(30, 110)
 ax3.set_xlabel('Threadshold')
 ax3.set_ylabel('Burst Length')
 ax3.set_zlabel('')
-plt.title('False Positive Rate')
-
+plt.title('Threadshold Method\n False Positive Rate')
+plt.savefig(r'../outputs/png/Garrett_FP_rate')
 plt.show()
 
 #Plot the detection time.
@@ -105,8 +107,8 @@ ax3.view_init(30,110)
 ax3.set_xlabel('Threadshold')
 ax3.set_ylabel('Burst Length')
 ax3.set_zlabel('')
-plt.title('Detection Time (s)')
-
+plt.title('Threadshold Method\n Detection Time (s)')
+plt.savefig(r'../outputs/png/Garrett_detection_time')
 plt.show()
 
 #Garrett's CUSUM method
@@ -138,6 +140,7 @@ for th in threadshold:
                     break
         fp_rate=num_fp/attack_start_id
         fp_arr=np.append(fp_arr,fp_rate)
+        detect_time=detect_time/1000 #change ms to s
         detect_time_arr=np.append(detect_time_arr,detect_time)
 
     fp_data[th]=fp_arr
@@ -157,7 +160,7 @@ ax3.set_xlabel('Threadshold')
 ax3.set_ylabel('Window Length')
 ax3.set_zlabel('')
 plt.title('CUSUM Method\n False Positive Rate')
-
+plt.savefig(r'../outputs/png/Garrett_FP_rate_CUSUM')
 plt.show()
 
 #Plot the detection time.
@@ -174,5 +177,5 @@ ax3.set_xlabel('Threadshold')
 ax3.set_ylabel('Window Length')
 ax3.set_zlabel('')
 plt.title('CUSUM Method\n Detection Time (s)')
-
+plt.savefig(r'../outputs/png/Garrett_detection_time_CUSUM')
 plt.show()
