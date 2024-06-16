@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.stats import expon
-from utils.haversine import haversine
+from haversine import haversine
 
 
 def estimate_path_err(Drx, expF, qthr):
