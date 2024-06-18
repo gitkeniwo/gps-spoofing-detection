@@ -7,7 +7,7 @@ HIDDEN_SIZE = 50
 # Number of features in LSTM Hidden state h
 
 NUM_LAYERS = 2
-# LSTM 堆叠层数；Number of recurrent layers.
+# Number of recurrent layers.
 OUTPUT_SIZE = 6
 
 BATCH_FIRST = True

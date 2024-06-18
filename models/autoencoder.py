@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import mean_squared_error
 
+N_COMPONENTS = 3
+
 class Autoencoder(nn.Module):
     """
     Autoencoder class
@@ -14,7 +16,12 @@ class Autoencoder(nn.Module):
         _description_
     """
     
-    def __init__(self, input_size, first_layer_size, hidden_size, last_layer_size, output_size):
+    def __init__(self, input_size=N_COMPONENTS, 
+                 first_layer_size=25, 
+                 hidden_size=3, 
+                 last_layer_size=25, 
+                 output_size=N_COMPONENTS,
+                 **kwargs):
         super(Autoencoder, self).__init__()
         
         self.encoder = nn.Sequential(
