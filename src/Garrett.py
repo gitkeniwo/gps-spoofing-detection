@@ -5,14 +5,19 @@ import os
 from mpl_toolkits.mplot3d import Axes3D
 from haversine import haversine
 
+th_1=   []
+bl_1=   []
+th_2=   []
+w_2=    []
+
+global_r1=0.7
+global_c1=3
+global_r2=0
+global_c2=18
 FP_rate_1 =         []
 detection_time_1 =  []
 FP_rate_2 =         []
 detection_time_2 =  []
-global_r1=0.5
-global_c1=3
-global_r2=55
-global_c2=5
 
 def all_is_true(x):
     for i in x:
@@ -54,7 +59,7 @@ def Garrett(filename):
     #Garrett's first method
     data['d_e']=data.apply(lambda row: haversine((row['GPS_lat'],row['GPS_long']),(row['lat'],row['lon'])), axis=1)
     #Calculate the impact of different thresholds.
-    threshold=np.arange(0.5,11,0.5,dtype=float)
+    threshold=np.arange(0.5,8,0.2,dtype=float)
     for th in threshold:
         name='th_'+str(th)
         data[name]=data.apply(lambda row: row['d_e']>th, axis=1)
@@ -62,7 +67,7 @@ def Garrett(filename):
 
 
     #Calculate the impact of different bursts length.
-    burst_length=np.arange(1,20,1,dtype=int)
+    burst_length=np.arange(1,15,1,dtype=int)
     attack_start_id=np.where(data['spoofed']==1)[0][0]
     attack_start_time=data['Time'][attack_start_id]
 
@@ -157,23 +162,23 @@ def Garrett(filename):
 
     
     with open(output_path+"/result.txt","w") as f:
-        f.write("Recommended parameter values:\n")
+        f.write("Recommended parameter values:\n\n")
         f.write("threshold of Threshold method: "+str(r)+'\n')
         f.write("burst length of Threshold method: "+str(c)+'\n')
         f.write("FP rate of Threshold method: "+str(fp_data[r][c])+'\n')
         f.write("detection time of Threshold method: "+str(detect_time_data[r][c]+c/10)+'\n')
+    th_1.append(r)
+    bl_1.append(c)
     FP_rate_1.append(fp_data[global_r1][global_c1])
     detection_time_1.append(detect_time_data[global_r1][global_c1]+c/10)
     
 
 
     #Garrett's CUSUM method
-    #An empty 2d data frame to store the result of FP. rows: burst_length, columns: threshold 
-    threshold=np.arange(5,130,5,dtype=int)
-    #An empty 2d data frame to store the result of time to detect.
-    window_length=np.arange(2,100,5,dtype=int)
+    threshold=np.arange(0,12,0.2,dtype=float)
+    weight=np.arange(0.5,7,0.2,dtype=float)
 
-    #An empty 2d data frame to store the result of FP. rows: window_length, columns: threshold 
+    #An empty 2d data frame to store the result of FP. rows: weight, columns: threshold 
     fp_data=pd.DataFrame(columns=threshold)
     #An empty 2d data frame to store the result of time to detect.
     detect_time_data=pd.DataFrame(columns=threshold)
@@ -183,16 +188,18 @@ def Garrett(filename):
         fp_arr=np.array([])
         detect_time_arr=np.array([])
 
-        for wl in window_length:
+        for w in weight:
             num_fp=0
             detect_time=data['Time'][data.shape[0]-1]-attack_start_time
-
-            for i in range(data.shape[0]-wl+1):
-                if sum_larger_than_thredshold(data[name][i:i+wl],th):
+            
+            s=0
+            for i in range(data.shape[0]):
+                s=max(0,s+data[name][i]-w)
+                if s>th:
                     if i<=attack_start_id:
                         num_fp=num_fp+1
                     else:
-                        detect_time=data['Time'][i+wl-1]-attack_start_time
+                        detect_time=data['Time'][i]-attack_start_time
                         break
             fp_rate=num_fp/attack_start_id
             fp_arr=np.append(fp_arr,fp_rate)
@@ -206,14 +213,14 @@ def Garrett(filename):
     fig = plt.figure()
     ax3 = plt.axes(projection='3d')
 
-    X, Y = np.meshgrid(threshold, window_length)
+    X, Y = np.meshgrid(threshold, weight)
     Z = fp_data
 
     ax3.plot_surface(X,Y,Z,rstride = 1, cstride = 1, cmap='rainbow')
-    ax3.view_init(30, 30)
+    ax3.view_init(30, 150)
 
     ax3.set_xlabel('threshold')
-    ax3.set_ylabel('Window Length')
+    ax3.set_ylabel('Weight')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
     plt.title('CUSUM Method\n False Positive Rate')
@@ -225,14 +232,14 @@ def Garrett(filename):
     fig = plt.figure()
     ax3 = plt.axes(projection='3d')
 
-    X, Y = np.meshgrid(threshold, window_length)
+    X, Y = np.meshgrid(threshold, weight)
     Z = detect_time_data
 
     ax3.plot_surface(X,Y,Z,rstride = 1, cstride = 1, cmap='rainbow')
-    ax3.view_init(30,30)
+    ax3.view_init(30,150)
 
     ax3.set_xlabel('threshold')
-    ax3.set_ylabel('Window Length')
+    ax3.set_ylabel('Weight')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
     plt.title('CUSUM Method\n Detection Time (s)')
@@ -245,14 +252,14 @@ def Garrett(filename):
     fig = plt.figure()
     ax3 = plt.axes(projection='3d')
 
-    X, Y = np.meshgrid(threshold, window_length)
+    X, Y = np.meshgrid(threshold, weight)
     Z = arith_mean
 
     ax3.plot_surface(X,Y,Z,rstride = 1, cstride = 1, cmap='rainbow')
-    ax3.view_init(30,30)
+    ax3.view_init(30,150)
 
     ax3.set_xlabel('Threshold')
-    ax3.set_ylabel('Window Length')
+    ax3.set_ylabel('Weight')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
     plt.title('CUSUM Method\n Arithmetic Mean')
@@ -262,11 +269,13 @@ def Garrett(filename):
     c,r=arith_mean.stack().idxmin()
     
     with open(output_path+"/result.txt","a") as f:
-        f.write("Recommended parameter values:\n")
+        f.write("Recommended parameter values:\n\n")
         f.write("threshold of CUSUM method: "+str(r)+'\n')
-        f.write("window length of CUSUM method: "+str(c)+'\n')
+        f.write("weight of CUSUM method: "+str(c)+'\n')
         f.write("FP rate of CUSUM method: "+str(fp_data[r][c])+'\n')
         f.write("detection time of CUSUM method: "+str(detect_time_data[r][c]+c/10)+'\n')
+    th_2.append(r)
+    w_2.append(c)
     FP_rate_2.append(fp_data[global_r2][global_c2])
     detection_time_2.append(detect_time_data[global_r2][global_c2]+c/10)
 
@@ -278,8 +287,22 @@ if __name__=='__main__':
     for i in range(1,9):
         filename='trace'+str(i)
         Garrett(filename)
-    
-    print(FP_rate_1)
-    print(detection_time_1)
-    print(FP_rate_2)
-    print(detection_time_2)
+
+    output_path_total=r'./outputs/png/total/'
+    with open(output_path_total+"/result.txt","a") as f:
+        f.write("threshold of Threshold method:\n")
+        f.write(str(th_1)+"\n")
+        f.write("burst length of Threshold method: \n")
+        f.write(str(bl_1)+"\n")
+        f.write("threshold of CUSUM method:\n")
+        f.write(str(th_2)+"\n")
+        f.write("weight of CUSUM method:\n")
+        f.write(str(w_2)+"\n")
+        f.write("FP rate of Threshold method:\n")
+        f.write(str(FP_rate_1)+"\n")
+        f.write("detection time of Threshold method:\n")
+        f.write(str(detection_time_1)+"\n")
+        f.write("FP rate of CUSUM method:\n")
+        f.write(str(FP_rate_2)+"\n")
+        f.write("detection time of CUSUM method:\n")
+        f.write(str(detection_time_2)+"\n")

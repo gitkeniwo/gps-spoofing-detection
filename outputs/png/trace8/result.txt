@@ -1,10 +1,12 @@
 Recommended parameter values:
-threshold of Threshold method: 0.5
-burst length of Threshold method: 7
-FP rate of Threshold method: 0.02841173730787145
-detection time of Threshold method: 35.808
+
+threshold of Threshold method: 0.7
+burst length of Threshold method: 3
+FP rate of Threshold method: 0.11085235211923615
+detection time of Threshold method: 0.3
 Recommended parameter values:
-threshold of CUSUM method: 30
-window length of CUSUM method: 5
-FP rate of CUSUM method: 0.0
-detection time of CUSUM method: 105.686
+
+threshold of CUSUM method: 0.0
+weight of CUSUM method: 4
+FP rate of CUSUM method: 0.1248253376804844
+detection time of CUSUM method: 35.507999999999996
