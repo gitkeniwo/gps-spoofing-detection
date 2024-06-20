@@ -4,12 +4,20 @@ import numpy as np
 
 from sklearn.decomposition import PCA
 
+from utils.haversine import haversine_component_distance
+
 SELECT_ATTRIBUTES_WHELAN = ['GPS_lat', 'GPS_long', 'vx', 'vy', 'ax', 'ay']
 
 
-def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WHELAN, trace_num: int=0) -> pd.DataFrame:
+def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WHELAN, trace_num: int=0, method="haversine") -> pd.DataFrame:
     """
     Deals with raw data and returns a processed DataFrame with selected attributes as designated by `selected_attributes`.
+    
+    Parameters
+    ----------
+    method : str
+        The method to use for data preprocessing. Default is "haversine".
+        Possible values: "haversine", "pythagorean"
     """
     
     df = pd.read_csv(filepath)
@@ -30,9 +38,27 @@ def data_preprocessing(filepath: str, selected_attributes = SELECT_ATTRIBUTES_WH
     df = ps.sqldf(stmt, locals())
 
     # compute velocity
-    df['vx'] = df.GPS_long.diff() / df.Time.diff()
-    df['vy'] = df.GPS_lat.diff() / df.Time.diff()
-    df.dropna(inplace=True)
+    
+    if method == "haversine":
+        haversine_dist_lat, haversine_dist_lon = [], []
+
+        for rows in range(1, len(df)):
+            dist =  haversine_component_distance(
+                (df.loc[rows-1, 'GPS_lat'], df.loc[rows-1, 'GPS_long']), 
+                (df.loc[rows, 'GPS_lat'], df.loc[rows, 'GPS_long'])
+                )         
+            haversine_dist_lat.append(dist[0])
+            haversine_dist_lon.append(dist[1])
+            
+        df['vx'] = pd.Series(haversine_dist_lat) / df.Time.diff().dropna().reset_index(drop=True)
+        df['vy'] = pd.Series(haversine_dist_lon) / df.Time.diff().dropna().reset_index(drop=True)
+        df.dropna(inplace=True)
+        
+    elif method == "pythagorean":
+        
+        df['vx'] = df.GPS_long.diff() / df.Time.diff()
+        df['vy'] = df.GPS_lat.diff() / df.Time.diff()
+        df.dropna(inplace=True)
 
     # compute acceleration
     df['ax'] = df.vx.diff() / df.Time.diff()
