@@ -70,40 +70,22 @@ w_2=np.around(np.array(w_2),2)
 x = np.arange(len(traces))
 width = 0.2
 
-FP1_x = x
-FP2_x = x + width
-
-plt.scatter(FP1_x,td_1,label="Threshold")
-plt.scatter(FP2_x,bl_1,label="Burst Length")
+plt.scatter(FP1_x,td_1,s=15,label="Threshold (Threshold Method)")
+plt.scatter(FP1_x,bl_1,s=15,label="Burst Length (Threshold Method)")
+plt.scatter(FP1_x,td_2,s=15,label="Threshold  (CUSUM Method)")
+plt.scatter(FP1_x,w_2,s=15,label="Burst Length (CUSUM Method)")
 plt.xticks(x + width,labels=traces)
 
 for i in range(len(traces)):
     plt.text(FP1_x[i],td_1[i], td_1[i],va="bottom",ha="center",fontsize=8)
-    plt.text(FP2_x[i],bl_1[i], bl_1[i],va="bottom",ha="center",fontsize=8) 
+    plt.text(FP1_x[i],bl_1[i], bl_1[i],va="bottom",ha="center",fontsize=8)
+    plt.text(FP1_x[i],td_2[i], td_2[i],va="bottom",ha="center",fontsize=8)
+    plt.text(FP1_x[i],w_2[i], w_2[i],va="bottom",ha="center",fontsize=8) 
 
 plt.xlabel('Dataset')
 plt.ylabel('')
-plt.title('Threshold Method\n Recommended Values')
+plt.title('Recommended Parameter Values')
 plt.legend(loc="upper right")
 plt.savefig(output_path+'Recommended_Values_Threshold')
-plt.show()
-plt.close()
-
-DT1_x = x
-DT2_x = x + width
-
-plt.scatter(DT1_x,td_2,label="Threshold")
-plt.scatter(DT2_x,w_2,label="Weight")
-plt.xticks(x + width,labels=traces)
-
-for i in range(len(traces)):
-    plt.text(DT1_x[i],td_2[i], td_2[i],va="bottom",ha="center",fontsize=8)
-    plt.text(DT2_x[i],w_2[i], w_2[i],va="bottom",ha="center",fontsize=8) 
-
-plt.xlabel('Dataset')
-plt.ylabel('')
-plt.title('CUSUM Method\n Recommended Values')
-plt.legend(loc="upper right")
-plt.savefig(output_path+'Recommended_Values_CUSUM')
 plt.show()
 plt.close()

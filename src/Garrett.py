@@ -114,7 +114,7 @@ def Garrett(filename):
     ax3.set_ylabel('Burst Length')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
-    plt.title('threshold Method\n False Positive Rate')
+    plt.title('Threshold Method\n False Positive Rate')
     plt.savefig(output_path+'/Garrett_FP_rate')
     plt.close(fig)
 
@@ -133,7 +133,7 @@ def Garrett(filename):
     ax3.set_ylabel('Burst Length')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
-    plt.title('threshold Method\n Detection Time (s)')
+    plt.title('Threshold Method\n Detection Time (s)')
     plt.savefig(output_path+'/Garrett_detection_time')
     plt.close(fig)
 
@@ -154,7 +154,7 @@ def Garrett(filename):
     ax3.set_ylabel('Burst Length')
     ax3.set_zlabel('')
     ax3.legend([],title=filename)
-    plt.title('CUSUM Method\n Arithmetic Mean')
+    plt.title('Threshold Method\n Arithmetic Mean')
     plt.savefig(output_path+'/Garrett_detection_arithmetic_mean')
     plt.close(fig)
 
