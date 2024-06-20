@@ -9,4 +9,4 @@ Recommended parameter values:
 threshold of CUSUM method: 4.4
 weight of CUSUM method: 8
 FP rate of CUSUM method: 0.027559055118110236
-detection time of CUSUM method: 0.8
+detection time of CUSUM method: 0.0

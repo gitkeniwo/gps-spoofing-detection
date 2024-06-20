@@ -273,11 +273,11 @@ def Garrett(filename):
         f.write("threshold of CUSUM method: "+str(r)+'\n')
         f.write("weight of CUSUM method: "+str(c)+'\n')
         f.write("FP rate of CUSUM method: "+str(fp_data[r][c])+'\n')
-        f.write("detection time of CUSUM method: "+str(detect_time_data[r][c]+c/10)+'\n')
+        f.write("detection time of CUSUM method: "+str(detect_time_data[r][c])+'\n')
     th_2.append(r)
     w_2.append(c)
     FP_rate_2.append(fp_data[global_r2][global_c2])
-    detection_time_2.append(detect_time_data[global_r2][global_c2]+c/10)
+    detection_time_2.append(detect_time_data[global_r2][global_c2])
 
     print("Finished "+filename)
 
