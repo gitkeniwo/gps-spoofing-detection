@@ -1,5 +1,7 @@
 # IST Seminar - GPS Spoofing Detection
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Dataset Selection
 
 - drive-me-not: CRI-Lab, “cri-lab-hbku/gps-spoofing-detection-cellular.” Dec. 17, 2023. Accessed: May 01, 2024. [Online]. Available: https://github.com/cri-lab-hbku/gps-spoofing-detection-cellular
