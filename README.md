@@ -24,5 +24,6 @@
 - `notebooks/` includes notebooks for demonstrating the detection algorithms.
 - `outputs/` stores plotted assets.
 - `save_model/` is where saved detection model is located.
+- `slides/` is where the slides for presentation are stored.
 - `src/` Notebooks are converted to executable .py in src/
 - `utils/` contains basic utilities for data processing, visualization and training of models.
