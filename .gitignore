@@ -1,5 +1,6 @@
 *.zip
 *.tar.gz
+.idea/
 
 # Ignore everything in the data directory
 data/*
